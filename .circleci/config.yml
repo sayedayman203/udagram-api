@@ -1,32 +1,82 @@
 version: 2.1
+
 orbs:
   # orgs contain basc recipes and reproducible actions (install node, aws, etc.)
   node: circleci/node@5.0.2
   aws-cli: circleci/aws-cli@3.1.0
   aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@2.0.1
-  # different jobs are calles later in the workflows sections
+
+# Define the jobs we want to run for this project
 jobs:
   build:
     docker:
-      # the base image can run most needed actions with orbs
       - image: "cimg/base:stable"
     steps:
       - node/install
       - checkout
+      - aws-cli/setup
+      - eb/setup
       # install dependencies in both apps
       - run:
-          name: Front End Install
+          name: Front-End Install
           command: |
             npm run frontend:install
       - run:
-          name: Back End Install
+          name: Back-End Install
           command: |
             npm run backend:install
       - run:
-          name: Front End build
+          name: Front-End Build
           command: |
             npm run frontend:build
       - run:
-          name: Back End build
+          name: Back-End Build
           command: |
             npm run backend:build
+  test:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup
+      - eb/setup
+      # install dependencies in both apps
+      - run:
+          name: Front-End Tests
+          command: |
+            npm run frontend:test
+      - run:
+          name: Back-End Tests
+          command: |
+            npm run backend:test
+  deploy:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - checkout
+      - aws-cli/setup
+      - eb/setup
+      # install dependencies in both apps
+      - run:
+          name: Front-End Deploy
+          command: |
+            npm run frontend:deploy
+      - run:
+          name: Back-End Deploy
+          command: |
+            npm run backend:deploy
+
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
