@@ -25,23 +25,7 @@ jobs:
           name: Back-End Install
           command: |
             npm run backend:install
-      - run:
-          name: Front-End Build
-          command: |
-            npm run frontend:build
-      - run:
-          name: Back-End Build
-          command: |
-            npm run backend:build
-  test:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - node/install
-      - checkout
-      - aws-cli/setup
-      - aws-elastic-beanstalk/setup
-      # install dependencies in both apps
+      # test both apps
       - run:
           name: Front-End Tests
           command: |
@@ -50,15 +34,16 @@ jobs:
           name: Back-End Tests
           command: |
             npm run backend:test
-  deploy:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - node/install
-      - checkout
-      - aws-cli/setup
-      - aws-elastic-beanstalk/setup
-      # install dependencies in both apps
+      # build both apps
+      - run:
+          name: Front-End Build
+          command: |
+            npm run frontend:build
+      - run:
+          name: Back-End Build
+          command: |
+            npm run backend:build
+      # deploy both apps
       - run:
           name: Front-End Deploy
           command: |
@@ -67,16 +52,3 @@ jobs:
           name: Back-End Deploy
           command: |
             npm run backend:deploy
-
-# Orchestrate our job run sequence
-workflows:
-  build_and_test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - build
-            - test
