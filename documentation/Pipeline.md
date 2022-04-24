@@ -10,9 +10,8 @@
   - run backend install
   - run frontend build
   - run backend build
-  - run frontend deploy
-  - run backend deploy
-  - setup env variables in cloud
+  - run frontend deploy (upload build in s3 bucket)
+  - run backend deploy (upload build project to elastic beanstalk bucket and setup env variables in cloud)
 
 ## Diagram
 
