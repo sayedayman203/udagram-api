@@ -43,10 +43,6 @@ jobs:
           name: Back-End Deploy
           command: |
             npm run backend:deploy
-      - run:
-          name: EB env setup
-          command: |
-            eb setenv PORT=$PORT AWS_KEY=$AWS_ACCESS_KEY_ID AWS_SECRET=$AWS_SECRET_ACCESS_KEY AWS_REGION=$AWS_DEFAULT_REGION AWS_BUCKET=$AWS_BUCKET JWT_SECRET=$JWT_SECRET POSTGRES_HOST=$POSTGRES_HOST POSTGRES_DB=$POSTGRES_DB POSTGRES_USERNAME=$POSTGRES_USERNAME POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_PORT=$POSTGRES_PORT
 workflows:
   build_project:
     jobs:
