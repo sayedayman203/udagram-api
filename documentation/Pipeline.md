@@ -1,9 +1,19 @@
 # CircleCI pipeline
 
-- install nodejs, aws-cli and eb-cli
-- install dependencies in frontend project
-- install dependencies in backend project
-- build frontend project
-- build backend project
-- deploy frontend project
-- deploy backend project
+- use nodejs, aws-cli and eb-cli orbs
+- filter build job for main repo
+- run build job :
+  - install nodejs
+  - checkout from the repo
+  - setup aws cli and eb cli credintials
+  - run frontend install
+  - run backend install
+  - run frontend build
+  - run backend build
+  - run frontend deploy
+  - run backend deploy
+  - setup env variables in cloud
+
+## Diagram
+
+![CircleCI Diagram](./assets/circleci-diagram.png)

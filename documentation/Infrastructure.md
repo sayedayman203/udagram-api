@@ -7,4 +7,4 @@
 
 ## Diagram
 
-![AWS Diagram](./assets/Diagram.png)
+![AWS Diagram](./assets/diagram.png)
